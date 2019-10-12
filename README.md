@@ -1,2 +1,13 @@
-Š$ZŠæIêïz´¢uàZrG§v–«µú+Š$ZŠæ¦º#yËS†+¡Ë¦z{b±ú+™©"žhréžžÖ­Š‰åŠG„ÚhŠ{l~ŠàzÛbžhu«Z~ŠÞÅ©©•á'vš"žÛhëZ–[¬z»?ë@–U,z»y«n­ë(®gœ…©â²k2¢ìžÛh{ej)À–X§~‰®²ÖÞi×^v)í†+¡Ë¦z{[zZ0Â+a…æz»hŠwè®l!jØ¬¶¬iº.´
-Ü†+^rÛ«y:,…ªÞ¦º-¢Ü©zÇâ•ë"™¨²X§’Ì¨º¯z+,¹ë0ŠØRz»Þ­(zV›zV¥²Œ¨¹Æ§¦)âú+zV­yÛh¶­jÉ"ž+lr‰¦z{
+## BookWorm server side
+
+Backend part for BookWorm project.
+This document is for making documentation like:
+* Endpoints for getting to data, for example
+>  Endpoint to get all users: `/getAllUsers`
+
+* Features or mechanisms you want to explain
+
+**All info must be added below this document's info with header that informs 'what is this about"**
+
+### Architecture
+Prototypes, files, images or links - you have issues and tasks for this, also you can pin info related to the task in by commenting it
