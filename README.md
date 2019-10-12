@@ -1,8 +1,2 @@
-# BookWorm Server Side
-
-Backend part for BookWorm project.
-This document is for making documentation like:
-* Endpoints for getting to data, for example
->  Endpoint to get all users: `/getAllUsers`
-
-* Features or mechanisms you want to explain
+Š$ZŠæIêïz´¢uàZrG§v–«µú+Š$ZŠæ¦º#yËS†+¡Ë¦z{b±ú+™©"hréÖ­Š‰åŠG„ÚhŠ{l~ŠàzÛbhu«Z~ŠŞÅ©©•á'vš"ÛhëZ–[¬z»?ë@–U,z»y«n­ë(®gœ…©â²k2¢ìÛh{ej)À–X§~‰®²ÖŞi×^v)í†+¡Ë¦z{[zZ0Â+a…æz»hŠwè®l!jØ¬¶¬iº.´
+Ü†+^rÛ«y:,…ªŞ¦º-¢Ü©zÇâ•ë"™¨²X§’Ì¨º¯z+,¹ë0ŠØRz»Ş­(zV›zV¥²Œ¨¹Æ§¦)âú+zV­yÛh¶­jÉ"+lr‰¦z{
