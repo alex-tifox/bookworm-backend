@@ -1,6 +1,8 @@
 package pl.bookworm.bookworm.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-interface Repository extends JpaRepository {
+@Repository
+public interface RepositoryName extends JpaRepository {
 }
