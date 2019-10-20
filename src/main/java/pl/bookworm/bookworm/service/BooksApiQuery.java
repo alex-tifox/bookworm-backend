@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import pl.bookworm.bookworm.configuration.ClientCredentials;
 
 @Service
-public class BooksApi {
+public class BooksApiQuery {
 
     private static final String APPLICATION_NAME = "ZutBookWorm";
 
