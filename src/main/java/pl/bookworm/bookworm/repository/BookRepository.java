@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import pl.bookworm.bookworm.model.Book;
 
 @Repository
-public interface BookRepository extends JpaRepository<Book, String> {
+public interface BookRepository extends JpaRepository<Book, Long> {
 }
