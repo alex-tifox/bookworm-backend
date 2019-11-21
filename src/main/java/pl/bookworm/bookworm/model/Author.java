@@ -1,9 +1,7 @@
 package pl.bookworm.bookworm.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Author {
@@ -14,6 +12,9 @@ public class Author {
     private String name;
     private String birthplace;
     private String description;
+
+    @OneToMany
+    private Set<Book> books;
 
     public Long getId() {
         return id;
@@ -45,5 +46,13 @@ public class Author {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 }
