@@ -16,6 +16,13 @@ public class BookReview {
 
     private Date timeOfCreation;
 
+    public BookReview() {}
+    public BookReview(String reviewText, User reviewAuthor, Date timeOfCreation) {
+        this.reviewText = reviewText;
+        this.reviewAuthor = reviewAuthor;
+        this.timeOfCreation = timeOfCreation;
+    }
+
     public Long getId() {
         return Id;
     }

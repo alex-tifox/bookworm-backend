@@ -20,6 +20,14 @@ public class Book {
     @OneToMany
     private Set<BookReview> bookReviews;
 
+    public Book() {}
+    public Book(String title, String description, Double bookAverageRate, Set<BookReview> bookReviews) {
+        this.title = title;
+        this.description = description;
+        this.bookAverageRate = bookAverageRate;
+        this.bookReviews = bookReviews;
+    }
+
     public Long getId() {
         return id;
     }
