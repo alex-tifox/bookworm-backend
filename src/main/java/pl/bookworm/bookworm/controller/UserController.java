@@ -29,7 +29,7 @@ public class UserController {
 
     @PostMapping("/login")
     User loginUser(@RequestBody User user, HttpServletResponse response) {
-        if (user.getPassword().equals("123123123") && user.getUsername().equals("janjan")) {
+        if (user.getUsername().equals("janjan") && user.getPassword().equals("123123123")) {
             response.setStatus(HttpStatus.SC_OK);
             return user;
         }
