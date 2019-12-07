@@ -12,6 +12,7 @@ public class BookReview {
 
     private String reviewText;
 
+    @ManyToOne
     private User reviewAuthor;
 
     private Date timeOfCreation;
