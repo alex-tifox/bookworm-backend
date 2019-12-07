@@ -1,13 +1,13 @@
 package pl.bookworm.bookworm.controller;
 
 import org.apache.http.HttpStatus;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import pl.bookworm.bookworm.model.User;
 import pl.bookworm.bookworm.service.UserService;
-
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,6 +20,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @CrossOrigin(origins = "${config.port.access.cors}")
     @PostMapping("/register")
     String registerUser(@RequestBody User newUser, HttpServletResponse response) {
         response.setStatus(HttpStatus.SC_OK);
@@ -27,6 +28,7 @@ public class UserController {
         return "User registered";
     }
 
+    @CrossOrigin(origins = "${config.port.access.cors}")
     @PostMapping("/login")
     User loginUser(@RequestBody User user, HttpServletResponse response) {
         if (user.getUsername().equals("janjan") && user.getPassword().equals("123123123")) {
