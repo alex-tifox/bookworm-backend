@@ -22,20 +22,24 @@ public class UserController {
 
     @CrossOrigin(origins = "${config.port.access.cors}")
     @PostMapping("/register")
-    String registerUser(@RequestBody User newUser, HttpServletResponse response) {
-        response.setStatus(HttpStatus.SC_OK);
-        userService.registerUser(newUser);
-        return "User registered";
+    public String registerUser(@RequestBody User newUser, HttpServletResponse response) {
+        if (userService.registerUser(newUser)) {
+            response.setStatus(HttpStatus.SC_OK);
+            return "User registered";
+        }
+        response.setStatus(HttpStatus.SC_CONFLICT);
+        return "User with such username is already existing. Try again.";
     }
 
     @CrossOrigin(origins = "${config.port.access.cors}")
     @PostMapping("/login")
-    User loginUser(@RequestBody User user, HttpServletResponse response) {
-        if (user.getUsername().equals("janjan") && user.getPassword().equals("123123123")) {
-            response.setStatus(HttpStatus.SC_OK);
-            return user;
+    public User loginUser(@RequestBody User user, HttpServletResponse response) {
+        User loggedInUser = userService.loginUser(user);
+        if (loggedInUser.equals(new User())) {
+            response.setStatus(HttpStatus.SC_UNAUTHORIZED);
+            return loggedInUser;
         }
-        response.setStatus(HttpStatus.SC_UNAUTHORIZED);
-        return new User();
+        response.setStatus(HttpStatus.SC_OK);
+        return loggedInUser;
     }
 }
