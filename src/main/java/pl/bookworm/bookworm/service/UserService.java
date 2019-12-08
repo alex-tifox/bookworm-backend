@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.bookworm.bookworm.configuration.ApplicationSecurity;
 import pl.bookworm.bookworm.model.User;
 import pl.bookworm.bookworm.repository.UserRepository;
 
@@ -41,7 +40,7 @@ public class UserService {
 		if (checkUserPassword(user))
 			return getLoggedInUser(user.getUsername());
 		else
-			return new User();
+			return new User("");
 	}
 
     private boolean checkUserPassword(User user) {

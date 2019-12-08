@@ -30,6 +30,11 @@ public class User {
     @Column(name = "LAST_LOGIN_DATE")
     private Date lastLoginDate;
 
+    public User() {}
+    public User(String username) {
+        this.username = username;
+    }
+
     public Long getId() {
         return id;
     }
