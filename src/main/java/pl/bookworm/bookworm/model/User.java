@@ -2,6 +2,7 @@ package pl.bookworm.bookworm.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -29,6 +30,20 @@ public class User {
 
     @Column(name = "LAST_LOGIN_DATE")
     private Date lastLoginDate;
+
+    private String userDescription;
+
+    @ManyToOne
+    private Book favouriteBook;
+
+    /* This set will be sorted for client purposes
+     * For example,
+     * If client need user's top 5 - this will be sorted by ratings
+     * If recent rated books - this one will be sorted by rating time
+     * TODO: add rating time to make list sorting more specific
+     */
+    @OneToMany
+    private Set<Book> usersRatedBooks;
 
     public User() {}
     public User(String username) {
@@ -89,5 +104,29 @@ public class User {
 
     public void setLastLoginDate(Date lastLoginDate) {
         this.lastLoginDate = lastLoginDate;
+    }
+
+    public Book getFavouriteBook() {
+        return favouriteBook;
+    }
+
+    public void setFavouriteBook(Book favouriteBook) {
+        this.favouriteBook = favouriteBook;
+    }
+
+    public String getUserDescription() {
+        return userDescription;
+    }
+
+    public void setUserDescription(String userDescription) {
+        this.userDescription = userDescription;
+    }
+
+    public Set<Book> getUsersRatedBooks() {
+        return usersRatedBooks;
+    }
+
+    public void setUsersRatedBooks(Set<Book> usersRatedBooks) {
+        this.usersRatedBooks = usersRatedBooks;
     }
 }
