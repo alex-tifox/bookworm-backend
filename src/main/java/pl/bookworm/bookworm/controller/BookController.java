@@ -63,13 +63,35 @@ public class BookController {
         return temporaryMockingBookData().getBookAverageRate();
     }
 
-    private Book temporaryMockingBookData() {
+     static Book temporaryMockingBookData() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         User user = new User();
         user.setUsername("review_username");
 
         Book book = new Book();
         book.setBookAverageRate(4.5);
+        book.setDescription("This book is veeery interesting, romantic novel");
+        book.setTitle("Book Title");
+
+        Set<BookReview> bookReviews = new HashSet<>();
+        try {
+            bookReviews.add(new BookReview("Awesome book!", user, format.parse("2019-07-21")));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        book.setBookReviews(bookReviews);
+
+        return book;
+    }
+
+    static Book temporaryMockingBookData(double averageBookRate) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        User user = new User();
+        user.setUsername("review_username");
+
+        Book book = new Book();
+        book.setBookAverageRate(averageBookRate);
         book.setDescription("This book is veeery interesting, romantic novel");
         book.setTitle("Book Title");
 
