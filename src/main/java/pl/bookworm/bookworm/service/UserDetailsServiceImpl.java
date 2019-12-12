@@ -1,5 +1,8 @@
 package pl.bookworm.bookworm.service;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,14 +13,11 @@ import pl.bookworm.bookworm.model.User;
 import pl.bookworm.bookworm.repository.UserRepository;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class UserDetailsServiceImpl implements UserDetailsService{
-	
-	final
-	private UserRepository userRepository;
 
-	public UserDetailsServiceImpl(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
+	UserRepository userRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -32,5 +32,4 @@ public class UserDetailsServiceImpl implements UserDetailsService{
         
         return userBuilder.build();
 	}
-	
 }

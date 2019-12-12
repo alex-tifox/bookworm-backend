@@ -1,6 +1,10 @@
 package pl.bookworm.bookworm.controller;
 
 import com.google.api.services.books.model.Volumes;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,19 +21,15 @@ import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Set;
 
+@Slf4j
+@RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RestController
 @RequestMapping("books")
 public class BookController {
 
-    private BookService bookService;
-
-    private BookRepository bookRepository;
-
-    @Autowired
-    public BookController(BookService bookService, BookRepository bookRepository) {
-        this.bookService = bookService;
-        this.bookRepository = bookRepository;
-    }
+    BookService bookService;
+    BookRepository bookRepository;
 
     @GetMapping("/getAuthorBooks/{authorName}")
     public Volumes getAuthorBooks(@PathVariable("authorName") String authorName) {
@@ -38,7 +38,6 @@ public class BookController {
 
     @GetMapping("/getBookByBookName/{bookName}")
     public Volumes getBookByBookName(@PathVariable("bookName") String bookName) {
-
         return bookService.getBooksByBookName(bookName);
     }
 
@@ -65,24 +64,40 @@ public class BookController {
 
      static Book temporaryMockingBookData() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        User user = new User();
-        user.setUsername("review_username");
-
-        Book book = new Book();
-        book.setBookAverageRate(4.5);
-        book.setDescription("This book is veeery interesting, romantic novel");
-        book.setTitle("Book Title");
+        User user = User.builder()
+                .username("review_username")
+                .build();
 
         Set<BookReview> bookReviews = new HashSet<>();
         try {
-            bookReviews.add(new BookReview("Awesome book!", user, format.parse("2019-07-21")));
+            bookReviews.add(
+                    BookReview.builder()
+                            .reviewText("Awesome book!")
+                            .reviewAuthor(user)
+                            .timeOfCreation(format.parse("2019-06-17")).build()
+            );
+            bookReviews.add(
+                    BookReview.builder()
+                            .reviewText("Good book!")
+                            .reviewAuthor(user)
+                            .timeOfCreation(format.parse("2019-01-05")).build()
+            );
+            bookReviews.add(
+                    BookReview.builder()
+                            .reviewText("I like it!")
+                            .reviewAuthor(user)
+                            .timeOfCreation(format.parse("2019-07-21")).build()
+            );
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        book.setBookReviews(bookReviews);
-
-        return book;
+        return Book.builder()
+                .bookAverageRate(4.5)
+                .description("This book is veeery interesting, romantic novel")
+                .title("Book Title")
+                .bookReviews(bookReviews)
+                .build();
     }
 
     static Book temporaryMockingBookData(double averageBookRate) {
