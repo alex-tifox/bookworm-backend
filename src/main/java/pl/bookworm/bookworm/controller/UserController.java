@@ -1,5 +1,9 @@
 package pl.bookworm.bookworm.controller;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,15 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.bookworm.bookworm.model.User;
 import pl.bookworm.bookworm.service.UserService;
 
-
+@Slf4j
+@RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RestController
 public class UserController {
 
-    private UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    UserService userService;
 
     @CrossOrigin(origins = "${config.port.access.cors}")
     @PostMapping("/register")
