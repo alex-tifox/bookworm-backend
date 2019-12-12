@@ -12,7 +12,8 @@ import java.util.Date;
 public class BookReview {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "public")
+    @SequenceGenerator(name="public", sequenceName = "book_review_seq")
     Long Id;
 
     String reviewText;

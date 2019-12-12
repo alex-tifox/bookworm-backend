@@ -12,7 +12,8 @@ import java.util.Set;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "public")
+    @SequenceGenerator(name="public", sequenceName = "book_seq")
     Long id;
 
     Integer publicationYear;

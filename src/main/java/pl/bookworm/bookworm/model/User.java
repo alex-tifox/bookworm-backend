@@ -17,7 +17,8 @@ public class User {
 
     //TODO: on production - change generation type to sequence
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "public")
+    @SequenceGenerator(name="public", sequenceName = "users_seq")
     Long id;
 
     String username;

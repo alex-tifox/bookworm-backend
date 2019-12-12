@@ -12,8 +12,10 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 public class Author {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "public")
+    @SequenceGenerator(name="public", sequenceName = "author_seq")
     Long id;
 
     String name;
