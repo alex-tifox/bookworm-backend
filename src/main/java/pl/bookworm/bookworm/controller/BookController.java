@@ -102,23 +102,39 @@ public class BookController {
 
     static Book temporaryMockingBookData(double averageBookRate) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        User user = new User();
-        user.setUsername("review_username");
-
-        Book book = new Book();
-        book.setBookAverageRate(averageBookRate);
-        book.setDescription("This book is veeery interesting, romantic novel");
-        book.setTitle("Book Title");
+        User user = User.builder()
+                .username("review_username")
+                .build();
 
         Set<BookReview> bookReviews = new HashSet<>();
         try {
-            bookReviews.add(new BookReview("Awesome book!", user, format.parse("2019-07-21")));
+            bookReviews.add(
+                    BookReview.builder()
+                            .reviewText("Awesome book!")
+                            .reviewAuthor(user)
+                            .timeOfCreation(format.parse("2019-06-17")).build()
+            );
+            bookReviews.add(
+                    BookReview.builder()
+                            .reviewText("Good book!")
+                            .reviewAuthor(user)
+                            .timeOfCreation(format.parse("2019-01-05")).build()
+            );
+            bookReviews.add(
+                    BookReview.builder()
+                            .reviewText("I like it!")
+                            .reviewAuthor(user)
+                            .timeOfCreation(format.parse("2019-07-21")).build()
+            );
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        book.setBookReviews(bookReviews);
-
-        return book;
+        return Book.builder()
+                .bookAverageRate(averageBookRate)
+                .description("This book is veeery interesting, romantic novel")
+                .title("Book Title")
+                .bookReviews(bookReviews)
+                .build();
     }
 }
