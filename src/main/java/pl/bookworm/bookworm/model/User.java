@@ -27,7 +27,8 @@ public class User {
     Date registrationDate;
     Date lastLoginDate;
     String userDescription;
-
+    boolean enabled;
+    
     @ManyToOne
     Book favouriteBook;
 
