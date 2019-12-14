@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import pl.bookworm.bookworm.model.Book;
 import pl.bookworm.bookworm.model.User;
+import pl.bookworm.bookworm.service.ConfirmationCodeService;
 import pl.bookworm.bookworm.service.UserService;
 
 import java.text.ParseException;
@@ -25,6 +26,7 @@ import java.util.List;
 public class UserController {
 
     UserService userService;
+    ConfirmationCodeService confirmationCodeService;
 
     @CrossOrigin(origins = "${config.port.access.cors}")
     @PostMapping("/register")
@@ -37,6 +39,15 @@ public class UserController {
                 HttpStatus.CONFLICT
         );
     }
+    
+    @GetMapping("/confirm")
+    public ResponseEntity<String> confirmUser(@RequestParam("code") String code) {
+    	if (confirmationCodeService.UseConfirmationCode(code)) {
+    		return new ResponseEntity<>("User confirmed", HttpStatus.OK);
+    	}
+    	
+    	return new ResponseEntity<>("Confirmation code doesn't exist or was already used.", HttpStatus.CONFLICT);
+    }
 
     @CrossOrigin(origins = "${config.port.access.cors}")
     @PostMapping("/login")
@@ -47,7 +58,7 @@ public class UserController {
         }
         return new ResponseEntity<>(loggedInUser, HttpStatus.UNAUTHORIZED);
     }
-
+    
     @GetMapping("/getUserShowcase/{username}")
     public ResponseEntity<User> getUserShowcase(@PathVariable("username") String username) {
         // find user's showcase (find User's record in the database)
