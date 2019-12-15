@@ -49,17 +49,17 @@ public class ConfirmationCodeService {
 	public boolean UseConfirmationCode(String code) {	
 		ConfirmationCode confirmationCode = confirmationCodeRepository.findByCode(code);
 
-		if (!IsCodeValid(confirmationCode)) {
+		if (!isCodeValid(confirmationCode)) {
 			return false;
 		}
 		
-		ConfirmUser(confirmationCode.getUser());
-		MarkCodeAsUsed(confirmationCode);
+		confirmUser(confirmationCode.getUser());
+		markCodeAsUsed(confirmationCode);
 		
 		return true;
 	}
 	
-	private boolean IsCodeValid(ConfirmationCode confirmationCode) {
+	private boolean isCodeValid(ConfirmationCode confirmationCode) {
 		if (confirmationCode == null) {
 			log.info("Code not found in database");
 			return false;
@@ -78,12 +78,12 @@ public class ConfirmationCodeService {
 		return true;
 	}
 	
-	private void ConfirmUser(User user) {	
+	private void confirmUser(User user) {
 		user.setEnabled(true);
 		userRepository.save(user);
 	}
 	
-	private void MarkCodeAsUsed(ConfirmationCode confirmationCode) {
+	private void markCodeAsUsed(ConfirmationCode confirmationCode) {
 		confirmationCode.setUsed(true);
 		confirmationCodeRepository.save(confirmationCode);
 	}

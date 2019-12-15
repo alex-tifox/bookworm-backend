@@ -20,7 +20,8 @@ public class EmailService {
 	
 	public void sendConfirmationCode(String code, String mail) {
 		log.info("Sending mail to " + mail);
-		
+
+		// Comment on your commit 5b8db4553ffdcd1f1be11708fa8a34689ae4ad04
 		String messageBody = "Aby potwierdzić konto kliknij <a href='http://localhost:8189/confirm?code=" + code + "'> tutaj </a>";
 		
 		MimeMessage message = mailSender.createMimeMessage();
