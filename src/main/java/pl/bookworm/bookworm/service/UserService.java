@@ -20,19 +20,29 @@ public class UserService {
 	final private UserRepository userRepository;
 	final private PasswordEncoder passwordEncoder;
 	final private UserDetailsServiceImpl userDetailsService;
+	ConfirmationCodeService confirmationCodeService;
 
 	public boolean registerUser(User newUser){
     	if (userRepository.findByUsername(newUser.getUsername()) != null) {
     		log.info("User is already existing");
 			return false;
 		}
+    	
+    	if (userRepository.findByEmail(newUser.getEmail()) != null){
+    		log.info("Email is already in use");
+    		return false;
+    	}
+    	
     	newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-    	userRepository.save(newUser);
+    	newUser = userRepository.save(newUser);
+    	
+    	confirmationCodeService.sendConfirmationForUser(newUser);
+    	
     	return true;
     }
 
     public User loginUser(User user) {
-		if (checkUserPassword(user))
+		if (checkUserPassword(user) && checkIfUserIsEnabled(user))
 			return getLoggedInUser(user.getUsername());
 		else {
 			return User.builder()
@@ -46,10 +56,19 @@ public class UserService {
 
 		log.info("Raw password: " + user.getPassword());
 		log.info("Password in db: " + userDetails.getPassword());
-
+		
 		return passwordEncoder.matches(user.getPassword(), userDetails.getPassword());
 	}
 
+    private boolean checkIfUserIsEnabled(User user) {
+		if (!userDetailsService.loadUserByUsername(user.getUsername()).isEnabled()) {
+			log.info("User account is not confirmed");
+			return false;
+		}
+		
+		return true;
+    }
+    
 	private User getLoggedInUser(String username) {
 		return userRepository.findByUsername(username);
 	}
