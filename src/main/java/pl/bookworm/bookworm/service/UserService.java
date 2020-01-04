@@ -51,6 +51,11 @@ public class UserService {
 		}
 	}
 
+    public User getUser(String username)
+    {
+    	return userRepository.findByUsername(username);
+    }
+    
     private boolean checkUserPassword(User user) {
 		UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
 
