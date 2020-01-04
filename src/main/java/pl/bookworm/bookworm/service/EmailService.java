@@ -39,4 +39,28 @@ public class EmailService {
     	mailSender.send(message);
     	log.info("Mail sent successfully");
 	}
+	
+	public void sendNewPassword(String password, String mail)
+	{
+		log.info("Sending mail with new password to " + mail);
+		String messageBody = "Oto twoje nowe hasło do konta: <b>" + password +  "</b>";
+		
+		MimeMessage message = mailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message);
+		try
+		{
+			helper.setText(messageBody,true);
+			helper.setTo(mail);
+			helper.setSubject("Nowe hasło do konta");
+			helper.setFrom("bookworm-zut@wp.pl");
+		}
+		catch (MessagingException e) 
+		{
+			log.info("Error while creating new password mail");
+			e.printStackTrace();
+		}
+		
+		mailSender.send(message);
+		log.info("Mail with new password sent successfully");
+	}
 }
