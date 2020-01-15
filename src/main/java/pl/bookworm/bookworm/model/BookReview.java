@@ -3,6 +3,10 @@ package pl.bookworm.bookworm.model;
 import lombok.*;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 
 @Builder(toBuilder = true)
@@ -18,6 +22,9 @@ public class BookReview {
     String reviewText;
     Date timeOfCreation;
 
-    @ManyToOne
+    @ManyToOne 
     User reviewAuthor;
+    
+    @ManyToOne @JsonBackReference
+    Book reviewBook;
 }
