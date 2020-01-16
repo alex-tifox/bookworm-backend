@@ -6,11 +6,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.bookworm.bookworm.model.Book;
 import pl.bookworm.bookworm.model.BookReview;
+import pl.bookworm.bookworm.model.BookReviewRate;
 import pl.bookworm.bookworm.model.User;
 import pl.bookworm.bookworm.repository.BookRepository;
+import pl.bookworm.bookworm.service.BookReviewRateService;
 import pl.bookworm.bookworm.service.BookService;
 
 import java.text.ParseException;
@@ -27,6 +32,7 @@ public class BookController {
 
     BookService bookService;
     BookRepository bookRepository;
+    BookReviewRateService bookReviewRateService;
 
     @CrossOrigin(origins = "${config.port.access.cors}")
     @GetMapping("/getAuthorBooks/{authorName}")
@@ -53,6 +59,14 @@ public class BookController {
 	public String addBookReview(@PathVariable("id") Long id, @RequestBody String reviewText) {
 		return bookService.addBookReview(reviewText, id);
 	}
+    
+    @CrossOrigin(origins = "${config.port.access.cors}")
+    @PostMapping("/addBookReviewRating")
+    public ResponseEntity<String> addBookReviewRating(@RequestBody BookReviewRate bookReviewRate) 
+	{
+		Pair<String, HttpStatus> newRating = bookReviewRateService.addNewRatingSecurity(bookReviewRate);
+		return new ResponseEntity<>(newRating.getFirst(), newRating.getSecond());
+    }
 	
 	@CrossOrigin(origins = "${config.port.access.cors}")
 	@PostMapping("/addBookRate/{id}")
