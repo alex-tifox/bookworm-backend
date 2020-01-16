@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.bookworm.bookworm.model.Book;
 import pl.bookworm.bookworm.model.User;
 import pl.bookworm.bookworm.service.ConfirmationCodeService;
+import pl.bookworm.bookworm.service.ResetPasswordService;
 import pl.bookworm.bookworm.service.UserService;
 
 import java.text.ParseException;
@@ -27,6 +28,7 @@ public class UserController {
 
     UserService userService;
     ConfirmationCodeService confirmationCodeService;
+    ResetPasswordService resetPasswordService;
 
     @CrossOrigin(origins = "${config.port.access.cors}")
     @PostMapping("/register")
@@ -57,6 +59,19 @@ public class UserController {
             return new ResponseEntity<>(loggedInUser, HttpStatus.OK);
         }
         return new ResponseEntity<>(loggedInUser, HttpStatus.UNAUTHORIZED);
+    }
+    
+    @CrossOrigin(origins = "${config.port.access.cors}")
+    @PostMapping("/reset")
+    public ResponseEntity<String> resetPassword(@RequestParam String username)
+    {
+    	User user = userService.getUser(username);
+		if(user != null)
+		{
+			resetPasswordService.changePasswordForUser(user);
+			return new ResponseEntity<>("Password has been reset", HttpStatus.OK);
+		}
+		return new ResponseEntity<>("User doesn't exist", HttpStatus.CONFLICT);		    	
     }
     
     @GetMapping("/getUserShowcase/{username}")
