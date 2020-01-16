@@ -89,6 +89,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
+		
+		<!-- Passay -->
+	    <dependency>
+	     	<groupId>org.passay</groupId>
+	      	<artifactId>passay</artifactId>
+	      	<version>1.4.0</version>
+	    </dependency>
 	</dependencies>
 
 	<build>
