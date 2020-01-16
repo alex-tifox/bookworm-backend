@@ -17,7 +17,7 @@ public interface BookReviewRepository extends JpaRepository<BookReview, Long> {
 	BookReview findByReviewAuthorAndReviewBook(User user, Book book);
 	
 	@Query("Select "
-	+ "new pl.bookworm.bookworm.model.BookReviewWithRate(v.Id, v.reviewAuthor, v.reviewText, t, v.timeOfCreation)"
+	+ "new pl.bookworm.bookworm.model.BookReviewWithRate(v.Id, v.reviewAuthor, v.reviewText, t, v.timeOfCreation, v.upvotes, v.downvotes)"
 	+ "from BookReview v left join BookRate t "
 	+ "on (v.reviewBook = t.ratedBook and v.reviewAuthor = t.rateAuthor) "
 	+ "where v.reviewBook = ?1")
