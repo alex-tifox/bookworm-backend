@@ -13,7 +13,7 @@ public class BooksApiQuery {
 
     private static final String APPLICATION_NAME = "ZutBookWorm";
 
-    public static Volumes queryGoogleBooks(JsonFactory jsonFactory, String query) throws Exception {
+    static Volumes queryGoogleBooks(JsonFactory jsonFactory, String query) throws Exception {
 
         final Books books = new Books.Builder(GoogleNetHttpTransport.newTrustedTransport(), jsonFactory, null)
                 .setApplicationName(APPLICATION_NAME)
@@ -23,8 +23,6 @@ public class BooksApiQuery {
         Books.Volumes.List volumesList = books.volumes().list(query);
         volumesList.setFilter("ebooks");
 
-        Volumes volumes = volumesList.execute();
-
-        return volumes;
+        return volumesList.execute();
     }
 }
