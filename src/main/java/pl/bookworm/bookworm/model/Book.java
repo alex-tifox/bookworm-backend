@@ -3,6 +3,9 @@ package pl.bookworm.bookworm.model;
 import lombok.*;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.Set;
 
 @Builder(toBuilder = true)
@@ -22,6 +25,6 @@ public class Book {
     String description;
     Double bookAverageRate;
 
-    @OneToMany
+    @OneToMany(mappedBy = "reviewBook") @JsonManagedReference
     Set<BookReview> bookReviews;
 }

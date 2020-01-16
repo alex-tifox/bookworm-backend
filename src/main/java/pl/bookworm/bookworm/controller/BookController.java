@@ -49,6 +49,18 @@ public class BookController {
     }
 
     @CrossOrigin(origins = "${config.port.access.cors}")
+	@PostMapping("/addBookReview/{id}")
+	public String addBookReview(@PathVariable("id") Long id, @RequestBody String reviewText) {
+		return bookService.addBookReview(reviewText, id);
+	}
+	
+	@CrossOrigin(origins = "${config.port.access.cors}")
+	@PostMapping("/addBookRate/{id}")
+	public String addBookRate(@PathVariable("id") Long id, @RequestBody double rate) {
+		return bookService.addBookRate(rate, id);
+	}
+    
+    @CrossOrigin(origins = "${config.port.access.cors}")
     @GetMapping("/getAllBookReviews/{id}")
     public Set<BookReview> getAllBookReviews(@PathVariable("id") Long id) {
 //        Book requiredBook = bookRepository.findById(id).orElse(new Book());
