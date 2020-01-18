@@ -37,19 +37,19 @@ public class BookReviewRateService
 
 		//Pair description: Pair.of(MESSAGE, HTTP_ERROR_CODE)
 		Optional<BookReview> tempBookReview = bookReviewRepository.findById(bookReview.getId());
-		if(!tempBookReview.isPresent())
+		if (!tempBookReview.isPresent())
 			return Pair.of("Book review is not found", HttpStatus.CONFLICT);
 
 		BookReview selectedBookReview = tempBookReview.get();
-		if(username == userService.USER_NOT_LOGGED_IN)
+		if (username == userService.USER_NOT_LOGGED_IN)
 			return Pair.of("User isn't currently logged in", HttpStatus.CONFLICT);
 		
 		User selectedUser = userRepository.findByUsername(username);
-		if(selectedUser == null)
+		if (selectedUser == null)
 			return Pair.of("User doesn't exists", HttpStatus.CONFLICT);
 		
 		BookReviewRate isReviewRating = bookReviewRateRepository.findByBookReviewAndUser(selectedBookReview, selectedUser);
-		if(isReviewRating != null)
+		if (isReviewRating != null)
 			return Pair.of("User has already added a review rating to the database", HttpStatus.CONFLICT);
 		
 		bookReviewRate = BookReviewRate.builder()
@@ -58,12 +58,12 @@ public class BookReviewRateService
 										.vote(rating)
 										.build();
 		
-		if(rating == 1)
+		if (rating == 1)
 			bookReviewRate.getBookReview().setUpvotes(selectedBookReview.getUpvotes() + 1);
-		else if(rating == -1)
+		else if (rating == -1)
 			bookReviewRate.getBookReview().setDownvotes(selectedBookReview.getDownvotes() + 1);
 
-		bookReviewRate = bookReviewRateRepository.save(bookReviewRate);
+		bookReviewRateRepository.save(bookReviewRate);
 		
 		return Pair.of("Added rating to the database", HttpStatus.OK);
 	}
