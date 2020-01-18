@@ -19,6 +19,7 @@ import pl.bookworm.bookworm.repository.BookReviewRepository;
 import pl.bookworm.bookworm.repository.UserRepository;
 
 import java.util.Date;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -134,4 +135,21 @@ public class BookService {
     	book.setBookAverageRate(average);
     	book = bookRepository.save(book);
     }
+
+	// BW-56 - create services
+	public Book getBookInfo(Long id) {
+        return bookRepository.findById(id).orElse(new Book());
+	}
+
+	// BW-56 - create services
+	public Set<BookReview> getAllBookReviews(Long id) {
+        Book requiredBook = bookRepository.findById(id).orElse(new Book());
+        return requiredBook.getBookReviews();
+	}
+
+	// BW-56 - create services
+	public Double getBookRate(Long id) {
+        Book requiredBook = bookRepository.findById(id).orElse(new Book());
+        return requiredBook.getBookAverageRate();
+	}
 }
