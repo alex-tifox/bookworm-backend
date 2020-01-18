@@ -26,7 +26,6 @@ import java.util.Set;
 public class BookController {
 
     BookService bookService;
-    BookRepository bookRepository;
 
     @CrossOrigin(origins = "${config.port.access.cors}")
     @GetMapping("/getAuthorBooks/{authorName}")
@@ -41,11 +40,25 @@ public class BookController {
     }
 
     // TODO: move logic of getting book's info to service
+    // TODO: BW-56 - create services
     @CrossOrigin(origins = "${config.port.access.cors}")
     @GetMapping("/getBookInfo/{id}")
     public Book getBookInfo(@PathVariable("id") Long id) {
-//        return bookRepository.findById(id).orElse(new Book());
-       return temporaryMockingBookData();
+        return bookService.getBookInfo(id);
+    }
+
+    // TODO: BW-56 - create services
+    @CrossOrigin(origins = "${config.port.access.cors}")
+    @GetMapping("/getAllBookReviews/{id}")
+    public Set<BookReview> getAllBookReviews(@PathVariable("id") Long id) {
+        return bookService.getAllBookReviews(id);
+    }
+
+    // TODO: BW-56 - create services
+    @CrossOrigin(origins = "${config.port.access.cors}")
+    @GetMapping("/getBookRate/{id}")
+    public Double getBookRate(@PathVariable("id") Long id) {
+        return bookService.getBookRate(id);
     }
 
     @CrossOrigin(origins = "${config.port.access.cors}")
@@ -59,22 +72,6 @@ public class BookController {
 	public String addBookRate(@PathVariable("id") Long id, @RequestBody double rate) {
 		return bookService.addBookRate(rate, id);
 	}
-    
-    @CrossOrigin(origins = "${config.port.access.cors}")
-    @GetMapping("/getAllBookReviews/{id}")
-    public Set<BookReview> getAllBookReviews(@PathVariable("id") Long id) {
-//        Book requiredBook = bookRepository.findById(id).orElse(new Book());
-//        return requiredBook.getBookReviews();
-        return temporaryMockingBookData().getBookReviews();
-    }
-
-    @CrossOrigin(origins = "${config.port.access.cors}")
-    @GetMapping("/getBookRate/{id}")
-    public Double getBookRate(@PathVariable("id") Long id) {
-//        Book requiredBook = bookRepository.findById(id).orElse(new Book());
-//        return requiredBook.getBookAverageRate();
-        return temporaryMockingBookData().getBookAverageRate();
-    }
 
      static Book temporaryMockingBookData() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
