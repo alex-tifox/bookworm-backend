@@ -34,34 +34,17 @@ public class BookService {
 	
 	BookReviewRepository bookReviewRepository;
 	BookRateRepository bookRateRepository;
-	
-    private JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
-    public Volumes getAuthorBooks(String query) {
-        return getBooks(query, true);
+	BooksApiQuery booksApi;
+
+
+    public Set<Book> getAuthorBooks(String query) {
+        return booksApi.getBooks(query, true);
+    }
+    public Set<Book> getBooksByBookName(String query) {
+        return booksApi.getBooks(query, false);
     }
 
-    public Volumes getBooksByBookName(String query) {
-        return getBooks(query, false);
-    }
-
-    private Volumes getBooks(String query, boolean isAuthor) {
-        String prefix;
-
-        if (isAuthor) prefix = "inauthor:";
-        else prefix = "intitle:";
-
-        query = prefix + query;
-        Volumes volumes = new Volumes();
-        try {
-            volumes = BooksApiQuery.queryGoogleBooks(jsonFactory, query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return volumes;
-    }
-    
     public String addBookReview(String reviewText, Long bookId) {
 		log.info("Adding review");
 	
