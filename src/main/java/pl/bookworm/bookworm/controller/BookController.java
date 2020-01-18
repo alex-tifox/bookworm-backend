@@ -39,22 +39,18 @@ public class BookController {
         return bookService.getBooksByBookName(bookName);
     }
 
-    // TODO: move logic of getting book's info to service
-    // TODO: BW-56 - create services
     @CrossOrigin(origins = "${config.port.access.cors}")
     @GetMapping("/getBookInfo/{id}")
     public Book getBookInfo(@PathVariable("id") Long id) {
         return bookService.getBookInfo(id);
     }
 
-    // TODO: BW-56 - create services
     @CrossOrigin(origins = "${config.port.access.cors}")
     @GetMapping("/getAllBookReviews/{id}")
     public Set<BookReview> getAllBookReviews(@PathVariable("id") Long id) {
         return bookService.getAllBookReviews(id);
     }
 
-    // TODO: BW-56 - create services
     @CrossOrigin(origins = "${config.port.access.cors}")
     @GetMapping("/getBookRate/{id}")
     public Double getBookRate(@PathVariable("id") Long id) {
