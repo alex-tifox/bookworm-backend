@@ -29,13 +29,13 @@ public class BookController {
 
     @CrossOrigin(origins = "${config.port.access.cors}")
     @GetMapping("/getAuthorBooks/{authorName}")
-    public Volumes getAuthorBooks(@PathVariable("authorName") String authorName) {
+    public Set<Book> getAuthorBooks(@PathVariable("authorName") String authorName) {
         return bookService.getAuthorBooks(authorName);
     }
 
     @CrossOrigin(origins = "${config.port.access.cors}")
     @GetMapping("/getBookByBookName/{bookName}")
-    public Volumes getBookByBookName(@PathVariable("bookName") String bookName) {
+    public Set<Book> getBookByBookName(@PathVariable("bookName") String bookName) {
         return bookService.getBooksByBookName(bookName);
     }
 
