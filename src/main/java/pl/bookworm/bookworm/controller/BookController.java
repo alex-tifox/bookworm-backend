@@ -1,16 +1,14 @@
 package pl.bookworm.bookworm.controller;
 
-import com.google.api.services.books.model.Volumes;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.bookworm.bookworm.model.Book;
 import pl.bookworm.bookworm.model.BookReview;
+import pl.bookworm.bookworm.model.BookReviewWithRate;
 import pl.bookworm.bookworm.model.User;
-import pl.bookworm.bookworm.repository.BookRepository;
 import pl.bookworm.bookworm.service.BookService;
 
 import java.text.ParseException;
@@ -47,7 +45,7 @@ public class BookController {
 
     @CrossOrigin(origins = "${config.port.access.cors}")
     @GetMapping("/getAllBookReviews/{id}")
-    public Set<BookReview> getAllBookReviews(@PathVariable("id") Long id) {
+    public Set<BookReviewWithRate> getAllBookReviews(@PathVariable("id") Long id) {
         return bookService.getAllBookReviews(id);
     }
 

@@ -1,9 +1,5 @@
 package pl.bookworm.bookworm.service;
 
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.books.model.Volumes;
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -125,9 +121,9 @@ public class BookService {
 	}
 
 	// BW-56 - create services
-	public Set<BookReview> getAllBookReviews(Long id) {
+	public Set<BookReviewWithRate> getAllBookReviews(Long id) {
         Book requiredBook = bookRepository.findById(id).orElse(new Book());
-        return requiredBook.getBookReviews();
+        return bookReviewRepository.findAllBookReviewsWithRatings(requiredBook);
 	}
 
 	// BW-56 - create services
