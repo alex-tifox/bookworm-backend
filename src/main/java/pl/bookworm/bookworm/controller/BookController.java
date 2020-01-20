@@ -1,19 +1,22 @@
 package pl.bookworm.bookworm.controller;
 
-import com.google.api.services.books.model.Volumes;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import pl.bookworm.bookworm.model.Book;
 import pl.bookworm.bookworm.model.BookReview;
 import pl.bookworm.bookworm.model.BookReviewRate;
 import pl.bookworm.bookworm.model.User;
+import pl.bookworm.bookworm.model.BookReviewWithRate;
 import pl.bookworm.bookworm.repository.BookRepository;
 import pl.bookworm.bookworm.service.BookReviewRateService;
 import pl.bookworm.bookworm.service.BookService;
@@ -36,13 +39,13 @@ public class BookController {
 
     @CrossOrigin(origins = "${config.port.access.cors}")
     @GetMapping("/getAuthorBooks/{authorName}")
-    public Volumes getAuthorBooks(@PathVariable("authorName") String authorName) {
+    public Set<Book> getAuthorBooks(@PathVariable("authorName") String authorName) {
         return bookService.getAuthorBooks(authorName);
     }
 
     @CrossOrigin(origins = "${config.port.access.cors}")
     @GetMapping("/getBookByBookName/{bookName}")
-    public Volumes getBookByBookName(@PathVariable("bookName") String bookName) {
+    public Set<Book> getBookByBookName(@PathVariable("bookName") String bookName) {
         return bookService.getBooksByBookName(bookName);
     }
 
@@ -54,7 +57,7 @@ public class BookController {
 
     @CrossOrigin(origins = "${config.port.access.cors}")
     @GetMapping("/getAllBookReviews/{id}")
-    public Set<BookReview> getAllBookReviews(@PathVariable("id") Long id) {
+    public Set<BookReviewWithRate> getAllBookReviews(@PathVariable("id") Long id) {
         return bookService.getAllBookReviews(id);
     }
 

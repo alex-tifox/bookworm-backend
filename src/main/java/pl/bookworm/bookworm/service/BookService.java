@@ -1,9 +1,5 @@
 package pl.bookworm.bookworm.service;
 
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.books.model.Volumes;
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -50,20 +46,16 @@ public class BookService {
     private Volumes getBooks(String query, boolean isAuthor) {
         String prefix;
 
-        if (isAuthor) prefix = "inauthor:";
-        else prefix = "intitle:";
+	BooksApiQuery booksApi;
 
-        query = prefix + query;
-        Volumes volumes = new Volumes();
-        try {
-            volumes = BooksApiQuery.queryGoogleBooks(jsonFactory, query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        return volumes;
+    public Set<Book> getAuthorBooks(String query) {
+        return booksApi.getBooks(query, true);
     }
-    
+    public Set<Book> getBooksByBookName(String query) {
+        return booksApi.getBooks(query, false);
+    }
+
     public String addBookReview(String reviewText, Long bookId) {
 		log.info("Adding review");
 	
@@ -158,9 +150,9 @@ public class BookService {
 	}
 
 	// BW-56 - create services
-	public Set<BookReview> getAllBookReviews(Long id) {
+	public Set<BookReviewWithRate> getAllBookReviews(Long id) {
         Book requiredBook = bookRepository.findById(id).orElse(new Book());
-        return requiredBook.getBookReviews();
+        return bookReviewRepository.findAllBookReviewsWithRatings(requiredBook);
 	}
 
 	// BW-56 - create services
