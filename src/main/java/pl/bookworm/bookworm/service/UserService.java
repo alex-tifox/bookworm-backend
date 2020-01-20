@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ public class UserService {
 	final private UserDetailsServiceImpl userDetailsService;
 	ConfirmationCodeService confirmationCodeService;
 
+	final public String USER_NOT_LOGGED_IN = "anonymousUser";
+	
 	public boolean registerUser(User newUser){
     	if (userRepository.findByUsername(newUser.getUsername()) != null) {
     		log.info("User is already existing");
@@ -49,6 +52,18 @@ public class UserService {
 					.username("")
 					.build();
 		}
+	}
+    
+    public String readUsernameFromSecurity()
+	{
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String loggedInUsername = USER_NOT_LOGGED_IN;
+		if(principal instanceof UserDetails)
+			loggedInUsername = ((UserDetails)principal).getUsername();
+		else
+			loggedInUsername = principal.toString();
+		
+		return loggedInUsername;
 	}
 
     public User getUser(String username)
