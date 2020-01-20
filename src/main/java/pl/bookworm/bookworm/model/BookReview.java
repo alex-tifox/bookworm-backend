@@ -19,6 +19,9 @@ public class BookReview {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long Id;
 
+    long upvotes;
+    long downvotes;
+    
     String reviewText;
     Date timeOfCreation;
 

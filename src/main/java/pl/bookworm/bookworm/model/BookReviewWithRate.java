@@ -17,12 +17,16 @@ public class BookReviewWithRate {
     String reviewText;
     double rate;
     Date timeOfCreation;
+    long upvotes;
+    long downvotes;
     
-    public BookReviewWithRate(long Id, User reviewAuthor, String reviewText, BookRate rate, Date timeOfCreation) {
+    public BookReviewWithRate(long Id, User reviewAuthor, String reviewText, BookRate rate, Date timeOfCreation, long upvotes, long downvotes) {
     	this.Id = Id;
     	this.reviewAuthor = reviewAuthor;
     	this.reviewText = reviewText;
     	this.rate = (rate != null) ? rate.getRate() : -1;
     	this.timeOfCreation = timeOfCreation;
+    	this.upvotes = upvotes;
+    	this.downvotes = downvotes;
     }
 }
