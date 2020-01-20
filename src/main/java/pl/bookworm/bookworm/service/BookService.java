@@ -30,21 +30,6 @@ public class BookService {
 	
 	BookReviewRepository bookReviewRepository;
 	BookRateRepository bookRateRepository;
-	
-	UserService userService;
-	
-    private JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-
-    public Volumes getAuthorBooks(String query) {
-        return getBooks(query, true);
-    }
-
-    public Volumes getBooksByBookName(String query) {
-        return getBooks(query, false);
-    }
-
-    private Volumes getBooks(String query, boolean isAuthor) {
-        String prefix;
 
 	BooksApiQuery booksApi;
 
@@ -59,15 +44,8 @@ public class BookService {
     public String addBookReview(String reviewText, Long bookId) {
 		log.info("Adding review");
 	
-    	String username = userService.readUsernameFromSecurity();
-    	
-    	if(username == userService.USER_NOT_LOGGED_IN)
-    		return "User isn't currently logged in";
-    	
-    	User user = userRepository.findByUsername(username);
-    	if(user == null)
-    		return "User doesn't exist";
-    	
+    	// todo: Get user from session
+    	User user = userRepository.findById((long) 1).orElse(new User());
     	Book book = bookRepository.findById(bookId).orElse(null);
     	
     	String validation = validationProblems(book, user);
@@ -91,15 +69,8 @@ public class BookService {
     public String addBookRate(double rate, Long bookId) {
 		log.info("Adding book rating");
 
-		String username = userService.readUsernameFromSecurity();
-    	
-    	if(username == userService.USER_NOT_LOGGED_IN)
-    		return "User isn't currently logged in";
-    	
-    	User user = userRepository.findByUsername(username);
-    	if(user == null)
-    		return "User doesn't exist";
-    	
+		// todo: Get user from session
+    	User user = userRepository.findById((long) 1).orElse(new User());
     	Book book = bookRepository.findById(bookId).orElse(null);
     	
     	String validation = validationProblems(book, user);
