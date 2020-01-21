@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -26,8 +27,7 @@ public class ApplicationSecurity  extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		
 		http
-			.cors()
-				.and()
+        	.addFilterBefore(corsFilter(), ChannelProcessingFilter.class)
 			.csrf()
 				.disable()
 			.authorizeRequests()
@@ -35,13 +35,12 @@ public class ApplicationSecurity  extends WebSecurityConfigurerAdapter {
 					.hasRole("ADMIN")
 				.antMatchers("/user/**")
 					.hasRole("USER")
-				.antMatchers("/**").
-					permitAll()
+				.antMatchers("/**")
+					.permitAll()
 				.and()
-			.addFilterAt(new JsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+			.addFilterAt(jsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 			.formLogin()
 				.loginPage("/login")
-				.defaultSuccessUrl("/")
 				.permitAll()
 				.and()
 			.logout()
@@ -60,16 +59,34 @@ public class ApplicationSecurity  extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 
-	/*
-	void EncodeExample(String password) {
-		String encoded = passwordEncoder().encode(password);
-	}
-	*/
-
-	/*
-	@PreAuthorize("hasRole('ADMIN')")
-	void OnlyAdminCanCallExample() {
-
-	}
-	*/
+    @Bean
+    CorsFilter corsFilter() {
+        CorsFilter filter = new CorsFilter();
+        return filter;
+    }
+   
+    @Bean
+    JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter() {
+    	JsonUsernamePasswordAuthenticationFilter filter = new JsonUsernamePasswordAuthenticationFilter();
+    	
+    	try {
+			filter.setAuthenticationManager(this.authenticationManagerBean());
+			filter.setAuthenticationSuccessHandler(loginSuccessHandler());       
+			filter.setAuthenticationFailureHandler(loginFailureHandler());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
+    	return filter;
+    }
+    
+    @Bean
+    LoginSuccessHandler loginSuccessHandler() {
+    	return new LoginSuccessHandler();
+    }
+    
+    @Bean
+    LoginFailureHandler loginFailureHandler() {
+    	return new LoginFailureHandler();
+    }
 }

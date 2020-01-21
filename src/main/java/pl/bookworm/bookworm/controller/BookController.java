@@ -37,43 +37,36 @@ public class BookController {
     BookRepository bookRepository;
     BookReviewRateService bookReviewRateService;
 
-    @CrossOrigin(origins = "${config.port.access.cors}")
     @GetMapping("/getAuthorBooks/{authorName}")
     public Set<Book> getAuthorBooks(@PathVariable("authorName") String authorName) {
         return bookService.getAuthorBooks(authorName);
     }
 
-    @CrossOrigin(origins = "${config.port.access.cors}")
     @GetMapping("/getBookByBookName/{bookName}")
     public Set<Book> getBookByBookName(@PathVariable("bookName") String bookName) {
         return bookService.getBooksByBookName(bookName);
     }
 
-    @CrossOrigin(origins = "${config.port.access.cors}")
     @GetMapping("/getBookInfo/{id}")
     public Book getBookInfo(@PathVariable("id") Long id) {
         return bookService.getBookInfo(id);
     }
 
-    @CrossOrigin(origins = "${config.port.access.cors}")
     @GetMapping("/getAllBookReviews/{id}")
     public Set<BookReviewWithRate> getAllBookReviews(@PathVariable("id") Long id) {
         return bookService.getAllBookReviews(id);
     }
 
-    @CrossOrigin(origins = "${config.port.access.cors}")
     @GetMapping("/getBookRate/{id}")
     public Double getBookRate(@PathVariable("id") Long id) {
         return bookService.getBookRate(id);
     }
 
-    @CrossOrigin(origins = "${config.port.access.cors}")
 	@PostMapping("/addBookReview/{id}")
 	public String addBookReview(@PathVariable("id") Long id, @RequestBody String reviewText) {
 		return bookService.addBookReview(reviewText, id);
 	}
     
-    @CrossOrigin(origins = "${config.port.access.cors}")
     @PostMapping("/addBookReviewRating")
     public ResponseEntity<String> addBookReviewRating(@RequestBody BookReviewRate bookReviewRate) 
 	{
@@ -81,7 +74,6 @@ public class BookController {
 		return new ResponseEntity<>(newRating.getFirst(), newRating.getSecond());
     }
 	
-	@CrossOrigin(origins = "${config.port.access.cors}")
 	@PostMapping("/addBookRate/{id}")
 	public String addBookRate(@PathVariable("id") Long id, @RequestBody double rate) {
 		return bookService.addBookRate(rate, id);

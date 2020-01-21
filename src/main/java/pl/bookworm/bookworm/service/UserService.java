@@ -20,7 +20,6 @@ import pl.bookworm.bookworm.repository.UserRepository;
 public class UserService {
 	final private UserRepository userRepository;
 	final private PasswordEncoder passwordEncoder;
-	final private UserDetailsServiceImpl userDetailsService;
 	ConfirmationCodeService confirmationCodeService;
 
 	final public String USER_NOT_LOGGED_IN = "anonymousUser";
@@ -37,22 +36,21 @@ public class UserService {
     	}
     	
     	newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-    	newUser = userRepository.save(newUser);
     	
+    	newUser = User.builder()
+    				.username(newUser.getUsername())
+    				.password(newUser.getPassword())
+    				.email(newUser.getEmail())
+    				.userFullname(newUser.getUserFullname())
+    				.userDescription(newUser.getUserDescription())
+    				.enabled(false)
+    				.build();
+    	
+    	newUser = userRepository.save(newUser);
     	confirmationCodeService.sendConfirmationForUser(newUser);
     	
     	return true;
     }
-
-    public User loginUser(User user) {
-		if (checkUserPassword(user) && checkIfUserIsEnabled(user))
-			return getLoggedInUser(user.getUsername());
-		else {
-			return User.builder()
-					.username("")
-					.build();
-		}
-	}
     
     public String readUsernameFromSecurity()
 	{
@@ -70,26 +68,4 @@ public class UserService {
     {
     	return userRepository.findByUsername(username);
     }
-    
-    private boolean checkUserPassword(User user) {
-		UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
-
-		log.info("Raw password: " + user.getPassword());
-		log.info("Password in db: " + userDetails.getPassword());
-		
-		return passwordEncoder.matches(user.getPassword(), userDetails.getPassword());
-	}
-
-    private boolean checkIfUserIsEnabled(User user) {
-		if (!userDetailsService.loadUserByUsername(user.getUsername()).isEnabled()) {
-			log.info("User account is not confirmed");
-			return false;
-		}
-		
-		return true;
-    }
-    
-	private User getLoggedInUser(String username) {
-		return userRepository.findByUsername(username);
-	}
 }	
