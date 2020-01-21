@@ -4,6 +4,10 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 import java.util.Set;
 
@@ -21,6 +25,9 @@ public class User {
     Long id;
 
     String username;
+    
+    @Getter(onMethod = @__( @JsonIgnore ))
+    @Setter(onMethod = @__( @JsonProperty ))
     String password;
     String userFullname;
     String email;
