@@ -27,9 +27,9 @@ public class JsonUsernamePasswordAuthenticationFilter extends UsernamePasswordAu
 		
 		User user = getUserFromRequest(request);
 		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
-
+		
 		setDetails(request, authRequest);		
-		return authRequest;
+		return this.getAuthenticationManager().authenticate(authRequest);
 	}
 	
 	private User getUserFromRequest(HttpServletRequest request) {
