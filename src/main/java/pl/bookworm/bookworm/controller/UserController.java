@@ -50,16 +50,6 @@ public class UserController {
     	
     	return new ResponseEntity<>("Confirmation code doesn't exist or was already used.", HttpStatus.CONFLICT);
     }
-
-    @CrossOrigin(origins = "${config.port.access.cors}")
-    @PostMapping("/login")
-    public ResponseEntity<User> loginUser(@RequestBody User user) {
-        User loggedInUser = userService.loginUser(user);
-        if (!loggedInUser.getUsername().equals("")) {
-            return new ResponseEntity<>(loggedInUser, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(loggedInUser, HttpStatus.UNAUTHORIZED);
-    }
     
     @CrossOrigin(origins = "${config.port.access.cors}")
     @PostMapping("/reset")
