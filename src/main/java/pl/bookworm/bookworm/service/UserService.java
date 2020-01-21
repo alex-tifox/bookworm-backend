@@ -36,8 +36,17 @@ public class UserService {
     	}
     	
     	newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-    	newUser = userRepository.save(newUser);
     	
+    	newUser = User.builder()
+    				.username(newUser.getUsername())
+    				.password(newUser.getPassword())
+    				.email(newUser.getEmail())
+    				.userFullname(newUser.getUserFullname())
+    				.userDescription(newUser.getUserDescription())
+    				.enabled(false)
+    				.build();
+    	
+    	newUser = userRepository.save(newUser);
     	confirmationCodeService.sendConfirmationForUser(newUser);
     	
     	return true;
