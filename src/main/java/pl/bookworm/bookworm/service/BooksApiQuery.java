@@ -28,6 +28,9 @@ import java.util.Set;
 public class BooksApiQuery {
 
     static String APPLICATION_NAME = "ZutBookWorm";
+    static String NO_COVER_THUMBNAIL_URL = "https://books.google.pl/googlebooks/images/no_cover_thumb.gif";
+    static String NO_CATEGORY = "Not specified";
+    static String NO_DESCRIPTION = "No description";
     JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
     private static Volumes queryGoogleBooks(JsonFactory jsonFactory, String query) throws Exception {
@@ -63,11 +66,27 @@ public class BooksApiQuery {
     private Set<Book> transformVolumeToBook(Volumes volumes) {
         Set<Book> booksForTakeaway = new HashSet<>();
         for (Volume item: volumes.getItems()) {
+        	String thumbnailUrl = NO_COVER_THUMBNAIL_URL;
+        	String categories = NO_CATEGORY;
+        	
+        	if(item.getVolumeInfo().getImageLinks() != null)
+        	{
+        		thumbnailUrl = item.getVolumeInfo().getImageLinks().getThumbnail();
+        	}
+        	
+        	if(item.getVolumeInfo().getCategories() != null)
+        	{
+        		int maxCategories = (item.getVolumeInfo().getCategories().size() > 3) ? 3 : item.getVolumeInfo().getCategories().size();
+        		categories = String.join(", ", item.getVolumeInfo().getCategories().subList(0, maxCategories));
+        	}
+        	
             booksForTakeaway.add(Book.builder()
                     .googleApiId(item.getId())
                     .title(item.getVolumeInfo().getTitle())
-                    .description(item.getVolumeInfo().getDescription())
+                    .description((item.getVolumeInfo().getDescription() == null) ? NO_DESCRIPTION : item.getVolumeInfo().getDescription())
                     .publicationYear(2005)
+                    .thumbnailUrl(thumbnailUrl)
+                    .categories(categories)
                     .build());
         }
 
