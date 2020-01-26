@@ -23,6 +23,8 @@ public class Book {
     String isbn;
     String googleApiId;
     String description;
+    String thumbnailUrl;
+    String categories;
     Double bookAverageRate;
 
     @OneToMany(mappedBy = "reviewBook") @JsonManagedReference
