@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
+import pl.bookworm.bookworm.service.middleware.BookMiddlewareService;
 
 //TODO: Check if the book is in our database or not - implement the mechanic from #BW-12
 @Slf4j
@@ -31,14 +32,14 @@ public class BookService {
 	BookReviewRepository bookReviewRepository;
 	BookRateRepository bookRateRepository;
 
-	BooksApiQuery booksApi;
-
+	BookMiddlewareService bookMiddlewareService;
 
     public Set<Book> getAuthorBooks(String query) {
-        return booksApi.getBooks(query, true);
+        return bookMiddlewareService.getAuthorBooks(query);
     }
+
     public Set<Book> getBooksByBookName(String query) {
-        return booksApi.getBooks(query, false);
+        return bookMiddlewareService.getBooksByName(query);
     }
 
     public String addBookReview(String reviewText, Long bookId) {
@@ -115,6 +116,7 @@ public class BookService {
     	book = bookRepository.save(book);
     }
 
+    // BW-63
 	// BW-56 - create services
 	public Book getBookInfo(Long id) {
         return bookRepository.findById(id).orElse(new Book());

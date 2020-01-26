@@ -1,4 +1,4 @@
-package pl.bookworm.bookworm.service;
+package pl.bookworm.bookworm.service.middleware;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -25,12 +25,12 @@ import java.util.Set;
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Service
-public class BooksApiQuery {
+class BooksApiQuery {
 
-    static String APPLICATION_NAME = "ZutBookWorm";
-    static String NO_COVER_THUMBNAIL_URL = "https://books.google.pl/googlebooks/images/no_cover_thumb.gif";
-    static String NO_CATEGORY = "Not specified";
-    static String NO_DESCRIPTION = "No description";
+    private static String APPLICATION_NAME = "ZutBookWorm";
+    private static String NO_COVER_THUMBNAIL_URL = "https://books.google.pl/googlebooks/images/no_cover_thumb.gif";
+    private static String NO_CATEGORY = "Not specified";
+    private static String NO_DESCRIPTION = "No description";
     JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
     private static Volumes queryGoogleBooks(JsonFactory jsonFactory, String query) throws Exception {
@@ -46,7 +46,7 @@ public class BooksApiQuery {
         return volumesList.execute();
     }
 
-    public Set<Book> getBooks(String query, boolean isAuthor) {
+    Set<Book> getBooks(String query, boolean isAuthor) {
         String prefix;
 
         if (isAuthor) prefix = "inauthor:";
