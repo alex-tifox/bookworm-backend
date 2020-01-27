@@ -5,9 +5,7 @@ import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Set;
 
 @Builder(toBuilder = true)
@@ -24,6 +22,6 @@ public class Author {
     String birthplace;
     String description;
 
-    @OneToMany(mappedBy = "author") @JsonIgnoreProperties("author")
+    @OneToMany(mappedBy = "author") @JsonIgnore
     Set<Book> books;
 }
