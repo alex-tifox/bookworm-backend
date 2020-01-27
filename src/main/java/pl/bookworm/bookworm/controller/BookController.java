@@ -34,7 +34,6 @@ import java.util.Set;
 public class BookController {
 
     BookService bookService;
-    BookRepository bookRepository;
     BookReviewRateService bookReviewRateService;
 
     @GetMapping("/getAuthorBooks/{authorName}")

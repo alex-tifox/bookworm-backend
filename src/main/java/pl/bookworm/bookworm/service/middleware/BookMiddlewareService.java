@@ -26,24 +26,30 @@ public class BookMiddlewareService {
     }
 
     public Set<Book> getBooksByName(String query) {
-        // TODO: check book existing in repo - if no existing - go to google and save it in our db and return to the user
-        // TODO: otherwise - return what you've found in db
+        // check book existing in repo - if no existing - go to google and save it in our db and return to the user
+        // otherwise - return what you've found in db
        Set<Book> books = bookRepository.findBooksByTitle(query);
        if (books == null) {
            // TODO: Go to google api: get , save and return
            books = booksApi.getBooks(query, false);
-           boolean saveResult = saveToRepository(books);
+           saveAllBooks(books);
 
-           if (saveResult) {
-               return bookRepository.findBooksByTitle(query);
-           }
+           return bookRepository.findBooksByTitle(query);
        }
        return books;
     }
 
-    private boolean saveToRepository(Set<Book> booksToSave) {
-        List<Book> saveResult = new ArrayList<>();
-        saveResult = bookRepository.saveAll(booksToSave);
-        return !saveResult.isEmpty();
+    private void saveAllBooks(Set<Book> booksToSave) {
+        for (Book book: booksToSave) {
+            bookRepository.insertBook(
+                    book.getAuthorName(),
+                    book.getPublicationYear().toString(),
+                    book.getTitle(),
+                    book.getIsbn(),
+                    book.getDescription(),
+                    book.getThumbnailUrl(),
+                    book.getCategories(),
+                    book.getGoogleApiId());
+        }
     }
 }

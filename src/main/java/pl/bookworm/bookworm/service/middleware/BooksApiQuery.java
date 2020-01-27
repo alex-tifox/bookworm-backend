@@ -87,6 +87,7 @@ class BooksApiQuery {
                     .publicationYear(2005)
                     .thumbnailUrl(thumbnailUrl)
                     .categories(categories)
+                    .authorName(item.getVolumeInfo().getAuthors().get(0))
                     .build());
         }
 
