@@ -12,6 +12,7 @@ import java.util.Set;
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 @Entity
+@Table(name = "books")
 public class Book {
 
     @Id
@@ -26,6 +27,7 @@ public class Book {
     String thumbnailUrl;
     String categories;
     Double bookAverageRate;
+    String authorName;
 
     @OneToMany(mappedBy = "reviewBook") @JsonManagedReference
     Set<BookReview> bookReviews;
