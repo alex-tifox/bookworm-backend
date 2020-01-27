@@ -29,9 +29,15 @@ public class BookMiddlewareService {
         // check book existing in repo - if no existing - go to google and save it in our db and return to the user
         // otherwise - return what you've found in db
        Set<Book> books = bookRepository.findBooksByTitle(query);
-       if (books == null) {
-           // TODO: Go to google api: get , save and return
+       log.info(books.toString());
+       if (books.isEmpty()) {
+           log.info("books is empty, going to Google API");
+           // Go to google api: get , save and return
            books = booksApi.getBooks(query, false);
+
+           log.warn("Books for saving");
+           log.info(books.toString());
+
            saveAllBooks(books);
 
            return bookRepository.findBooksByTitle(query);

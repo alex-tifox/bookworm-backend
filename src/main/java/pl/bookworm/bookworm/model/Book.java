@@ -27,10 +27,29 @@ public class Book {
     String categories;
     Double bookAverageRate;
     String authorName;
+    Long authorId;
 
     @OneToMany(mappedBy = "reviewBook") @JsonIgnore
     Set<BookReview> bookReviews;
     
     @ManyToOne
     Author author;
+
+    @Override
+    public String toString() {
+        return "Book{" +
+
+                "publicationYear=" + publicationYear +
+                ", title='" + title + '\'' +
+                ", isbn='" + isbn + '\'' +
+                ", googleApiId='" + googleApiId + '\'' +
+                ", description='" + description + '\'' +
+                ", thumbnailUrl='" + thumbnailUrl + '\'' +
+                ", categories='" + categories + '\'' +
+                ", bookAverageRate=" + bookAverageRate +
+                ", authorName='" + authorName + '\'' +
+                ", bookReviews=" + bookReviews +
+                ", author=" + author +
+                '}';
+    }
 }

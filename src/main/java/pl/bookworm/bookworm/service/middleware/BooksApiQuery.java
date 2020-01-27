@@ -79,16 +79,24 @@ class BooksApiQuery {
         		int maxCategories = (item.getVolumeInfo().getCategories().size() > 3) ? 3 : item.getVolumeInfo().getCategories().size();
         		categories = String.join(", ", item.getVolumeInfo().getCategories().subList(0, maxCategories));
         	}
-        	
-            booksForTakeaway.add(Book.builder()
-                    .googleApiId(item.getId())
-                    .title(item.getVolumeInfo().getTitle())
-                    .description((item.getVolumeInfo().getDescription() == null) ? NO_DESCRIPTION : item.getVolumeInfo().getDescription())
-                    .publicationYear(2005)
-                    .thumbnailUrl(thumbnailUrl)
-                    .categories(categories)
-                    .authorName(item.getVolumeInfo().getAuthors().get(0))
-                    .build());
+
+        	try {
+
+        	    log.info(item.getVolumeInfo().getAuthors().get(0));
+
+                booksForTakeaway.add(Book.builder()
+                        .googleApiId(item.getId())
+                        .title(item.getVolumeInfo().getTitle())
+                        .description((item.getVolumeInfo().getDescription() == null) ? NO_DESCRIPTION : item.getVolumeInfo().getDescription())
+                        .publicationYear(2005)
+                        .thumbnailUrl(thumbnailUrl)
+                        .categories(categories)
+                        .authorName(item.getVolumeInfo().getAuthors().get(0))
+                        .build());
+            } catch (NullPointerException e) {
+                log.warn("NPE in item");
+                log.info(item.toString());
+            }
         }
 
         return  booksForTakeaway;
