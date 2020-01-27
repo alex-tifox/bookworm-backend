@@ -4,9 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.util.Date;
 
 @Builder(toBuilder = true)
@@ -28,6 +25,6 @@ public class BookReview {
     @ManyToOne 
     User reviewAuthor;
     
-    @ManyToOne @JsonBackReference
+    @ManyToOne 
     Book reviewBook;
 }
