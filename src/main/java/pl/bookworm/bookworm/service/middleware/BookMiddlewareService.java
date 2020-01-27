@@ -43,7 +43,7 @@ public class BookMiddlewareService {
         for (Book book: booksToSave) {
             bookRepository.insertBook(
                     book.getAuthorName(),
-                    book.getPublicationYear().toString(),
+                    book.getPublicationYear(),
                     book.getTitle(),
                     book.getIsbn(),
                     book.getDescription(),

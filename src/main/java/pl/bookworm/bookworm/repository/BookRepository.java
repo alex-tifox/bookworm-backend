@@ -17,7 +17,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Procedure(procedureName = "insert_books")
     void insertBook(@Param("AuthorName") String authorName,
-                    @Param("PublicationYear") String publicationYear,
+                    @Param("PublicationYear") Integer publicationYear,
                     @Param("Title") String title,
                     @Param("ISBN") String isbn,
                     @Param("Description") String description,
