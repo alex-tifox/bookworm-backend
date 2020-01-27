@@ -4,11 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import java.util.Set;
 
 @Builder(toBuilder = true)
@@ -30,9 +26,9 @@ public class Book {
     String categories;
     Double bookAverageRate;
 
-    @OneToMany(mappedBy = "reviewBook") @JsonManagedReference
+    @OneToMany(mappedBy = "reviewBook") @JsonIgnore
     Set<BookReview> bookReviews;
     
-    @ManyToOne @JsonIgnoreProperties("books")
+    @ManyToOne
     Author author;
 }
