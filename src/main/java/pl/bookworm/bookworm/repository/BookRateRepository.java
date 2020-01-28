@@ -1,5 +1,6 @@
 package pl.bookworm.bookworm.repository;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,4 +15,8 @@ public interface BookRateRepository extends JpaRepository<BookRate, Long> {
 	
 	@Query("Select avg(r.rate) from BookRate r where r.ratedBook = ?1")
 	double getAverageRatingByBook(Book ratedBook);
+	
+	List<Book> findFirst5ByRateAuthorOrderByRateDesc(User author);
+	List<Book> findFirst5ByRateAuthorOrderByTimeOfCreationDesc(User author);
+
 }
