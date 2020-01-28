@@ -19,15 +19,16 @@ public class Book {
     Long id;
 
     Integer publicationYear;
+    @Column(columnDefinition = "TEXT")
     String title;
     String isbn;
     String googleApiId;
+    @Column(columnDefinition = "TEXT")
     String description;
+    @Column(columnDefinition = "TEXT")	
     String thumbnailUrl;
     String categories;
     Double bookAverageRate;
-    String authorName;
-    Long authorId;
 
     @OneToMany(mappedBy = "reviewBook") @JsonIgnore
     Set<BookReview> bookReviews;
@@ -47,7 +48,6 @@ public class Book {
                 ", thumbnailUrl='" + thumbnailUrl + '\'' +
                 ", categories='" + categories + '\'' +
                 ", bookAverageRate=" + bookAverageRate +
-                ", authorName='" + authorName + '\'' +
                 ", bookReviews=" + bookReviews +
                 ", author=" + author +
                 '}';
