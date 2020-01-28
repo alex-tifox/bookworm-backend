@@ -18,24 +18,31 @@ import pl.bookworm.bookworm.model.Author;
 import pl.bookworm.bookworm.model.Book;
 import pl.bookworm.bookworm.model.BookReview;
 import pl.bookworm.bookworm.model.User;
+import pl.bookworm.bookworm.repository.AuthorRepository;
+import pl.bookworm.bookworm.repository.BookRepository;
 
 @Slf4j
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Service
-public class AuthorService {	
+public class AuthorService {
+
+	AuthorRepository authorRepository;
+
 	public Set<Book> getAuthorBooks(String authorName){
-		return temporaryMockingAuthorData().getBooks();
+		Author foundAuthor = authorRepository.findAuthorByName(authorName);
+		return authorRepository.findBooksByAuthorId(foundAuthor.getId());
 	}
 	
 	public Set<Book> getAuthorTopBooks(String authorName){
-		ArrayList<Book> books = new ArrayList<Book>(temporaryMockingAuthorData().getBooks());
+		Author foundAuthor = authorRepository.findAuthorByName(authorName);
+		ArrayList<Book> books = new ArrayList<Book>(authorRepository.findBooksByAuthorId(foundAuthor.getId()));
 		Collections.sort(books, Comparator.comparing(Book::getBookAverageRate).reversed());
-		return new HashSet<Book>(books.subList(0, 6));
+		return new HashSet<>(books.subList(0, 6));
 	}
 	
 	public Author getAuthor(String authorName) {
-		return temporaryMockingAuthorData();
+		return authorRepository.findAuthorByName(authorName);
 	}
 	
 	public String getAuthorBooksLastReview(String authorName) {
