@@ -1,10 +1,7 @@
 package pl.bookworm.bookworm.service;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.Vector;
-
 import org.springframework.stereotype.Service;
 
 import lombok.AccessLevel;
@@ -63,8 +60,7 @@ public class SearchService {
 	}
 	
 	SearchResult searchAuthors(String authorName){
-		Set<Author> authorsFound = new HashSet<>();
-		authorsFound.add(authorService.getAuthor(authorName));
+		Set<Author> authorsFound = authorService.findAuthorsByName(authorName);
 		log.info("Found {} authors with by query for {}", authorsFound.size(), authorName);
 				
 		return SearchResult.builder()
