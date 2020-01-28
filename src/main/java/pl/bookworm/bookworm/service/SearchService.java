@@ -24,6 +24,7 @@ import pl.bookworm.bookworm.repository.UserRepository;
 public class SearchService {
 	UserRepository userRepository;
 	BookService bookService;
+	AuthorService authorService;
 
 	public SearchResult processSearch(String bookName, String authorName, String userName) {
 		log.info("Starting proccessing search");
@@ -62,7 +63,8 @@ public class SearchService {
 	}
 	
 	SearchResult searchAuthors(String authorName){
-		Set<Author> authorsFound =	new HashSet<>();
+		Set<Author> authorsFound = new HashSet<>();
+		authorsFound.add(authorService.getAuthor(authorName));
 		log.info("Found {} authors with by query for {}", authorsFound.size(), authorName);
 				
 		return SearchResult.builder()

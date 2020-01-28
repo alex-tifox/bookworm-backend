@@ -27,10 +27,7 @@ public class BookMiddlewareService {
     BookRepository bookRepository;
     BooksApiQuery booksApi;
 
-    public Set<Book> getAuthorBooks(String query) {
-        booksApi.getBooks(query, true);
-        return new HashSet<>();
-    }
+
 
     public Set<Book> getBooksByName(String query) {
         // check book existing in repo - if no existing - go to google and save it in our db and return to the user

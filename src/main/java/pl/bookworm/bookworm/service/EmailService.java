@@ -22,7 +22,7 @@ public class EmailService {
 		log.info("Sending mail to " + mail);
 
 		// Comment on your commit 5b8db4553ffdcd1f1be11708fa8a34689ae4ad04
-		String messageBody = "Aby potwierdzić konto kliknij <a href='http://localhost:8189/confirm?code=" + code + "'> tutaj </a>";
+		String messageBody = "Aby potwierdzić konto kliknij <a href='http://194.99.20.241:8189/confirm?code=" + code + "'> tutaj </a>";
 		
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper  helper = new MimeMessageHelper(message);

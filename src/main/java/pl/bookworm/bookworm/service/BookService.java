@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
+import pl.bookworm.bookworm.service.middleware.AuthorMiddlewareService;
 import pl.bookworm.bookworm.service.middleware.BookMiddlewareService;
 
 //TODO: Check if the book is in our database or not - implement the mechanic from #BW-12
@@ -33,9 +34,11 @@ public class BookService {
 	BookRateRepository bookRateRepository;
 
 	BookMiddlewareService bookMiddlewareService;
+	AuthorMiddlewareService authorMiddlewareService;
+	UserService userService;
 
     public Set<Book> getAuthorBooks(String query) {
-        return bookMiddlewareService.getAuthorBooks(query);
+        return authorMiddlewareService.getAuthorBooks(query);
     }
 
     public Set<Book> getBooksByBookName(String query) {
@@ -44,10 +47,17 @@ public class BookService {
 
     public String addBookReview(String reviewText, Long bookId) {
 		log.info("Adding review");
-	
-    	// todo: Get user from session
-    	User user = userRepository.findById((long) 1).orElse(new User());
-    	Book book = bookRepository.findById(bookId).orElse(null);
+
+		String username = userService.readUsernameFromSecurity();
+
+		if (username == userService.USER_NOT_LOGGED_IN)
+			return "User isn't currently logged in";
+
+		User user = userRepository.findByUsername(username);
+		if (user == null)
+			return "User doesn't exist";
+
+		Book book = bookRepository.findById(bookId).orElse(null);
     	
     	String validation = validationProblems(book, user);
     	if (validation != null)
@@ -70,9 +80,16 @@ public class BookService {
     public String addBookRate(double rate, Long bookId) {
 		log.info("Adding book rating");
 
-		// todo: Get user from session
-    	User user = userRepository.findById((long) 1).orElse(new User());
-    	Book book = bookRepository.findById(bookId).orElse(null);
+		String username = userService.readUsernameFromSecurity();
+
+		if (username == userService.USER_NOT_LOGGED_IN)
+			return "User isn't currently logged in";
+
+		User user = userRepository.findByUsername(username);
+		if (user == null)
+			return "User doesn't exist";
+
+		Book book = bookRepository.findById(bookId).orElse(null);
     	
     	String validation = validationProblems(book, user);
     	if (validation != null)

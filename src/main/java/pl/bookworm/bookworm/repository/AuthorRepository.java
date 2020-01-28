@@ -11,7 +11,7 @@ import java.util.Set;
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, Long> {
 
-    @Query("select b from Book b where b.author_id = ?1")
+    @Query("select b from Book b where b.author = ?1")
     Set<Book> findBooksByAuthorId(Long authorId);
 
     Author findAuthorByName(String authorName);
