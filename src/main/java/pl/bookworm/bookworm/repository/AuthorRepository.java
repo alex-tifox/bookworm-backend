@@ -13,6 +13,7 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
 
     @Query("select b from Book b where b.author = ?1")
     Set<Book> findBooksByAuthorId(Long authorId);
+    Set<Author> findByNameContainingIgnoreCase(String nameQuery);
 
     Author findAuthorByName(String authorName);
 }
