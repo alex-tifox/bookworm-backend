@@ -20,5 +20,5 @@ public class SearchResult {
 	Set<Book> foundBooks;
 	Set<Author> foundAuthors;
 	Set<User> foundUsers;
-	List<Object> results;
+	Set<Object> results;
 }

@@ -1,5 +1,6 @@
 package pl.bookworm.bookworm.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
@@ -10,8 +11,10 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import pl.bookworm.bookworm.model.Author;
 import pl.bookworm.bookworm.model.Book;
 import pl.bookworm.bookworm.model.SearchResult;
+import pl.bookworm.bookworm.model.User;
 import pl.bookworm.bookworm.repository.UserRepository;
 
 @Slf4j
@@ -59,22 +62,22 @@ public class SearchService {
 	}
 	
 	SearchResult searchAuthors(String authorName){
-		List<Object> authorsFound =	new Vector<Object>();
+		Set<Author> authorsFound =	new HashSet<>();
 		log.info("Found {} authors with by query for {}", authorsFound.size(), authorName);
 				
 		return SearchResult.builder()
 				.category("authorName")
-				.results(authorsFound)
+                .foundAuthors(authorsFound)
 				.build();	
 		}
 	
 	SearchResult searchUsers(String userName){
-		List<Object> usersFound =	new Vector<Object>(userRepository.findByUsernameContainingIgnoreCase(userName));
+		Set<User> usersFound =	new HashSet<>(userRepository.findByUsernameContainingIgnoreCase(userName));
 		log.info("Found {} users with by query for {}", usersFound.size(), userName);
 				
 		return SearchResult.builder()
 				.category("userName")
-				.results(usersFound)
+				.foundUsers(usersFound)
 				.build();
 	}
 }
