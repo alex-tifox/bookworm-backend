@@ -1,6 +1,7 @@
 package pl.bookworm.bookworm.service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import pl.bookworm.bookworm.model.Book;
 import pl.bookworm.bookworm.model.SearchResult;
 import pl.bookworm.bookworm.repository.UserRepository;
 
@@ -18,7 +20,8 @@ import pl.bookworm.bookworm.repository.UserRepository;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class SearchService {
 	UserRepository userRepository;
-	
+	BookService bookService;
+
 	public SearchResult processSearch(String bookName, String authorName, String userName) {
 		log.info("Starting proccessing search");
 		
@@ -46,12 +49,12 @@ public class SearchService {
 	}
 	
 	SearchResult searchBooks(String bookName){
-		List<Object> booksFound =	new Vector<Object>();
+		Set<Book> booksFound = bookService.getBooksByBookName(bookName);
 		log.info("Found {} books with by query for {}", booksFound.size(), bookName);
 				
 		return SearchResult.builder()
 				.category("bookName")
-				.results(booksFound)
+				.foundBooks(booksFound)
 				.build();
 	}
 	
