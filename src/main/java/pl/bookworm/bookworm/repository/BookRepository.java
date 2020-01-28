@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import pl.bookworm.bookworm.model.Author;
 import pl.bookworm.bookworm.model.Book;
 import java.util.Set;
 
@@ -22,4 +24,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
                     @Param("GoogleAPI_ID") String googleApiId);
 
 
+    Set<Book> findFirst6ByAuthorOrderByBookAverageRateDesc(Author author);
+    
+    Set<Book> findByAuthor(Author author);
 }
