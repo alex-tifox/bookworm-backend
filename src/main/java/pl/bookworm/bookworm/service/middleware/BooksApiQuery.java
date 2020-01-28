@@ -13,9 +13,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import pl.bookworm.bookworm.configuration.ClientCredentials;
+import pl.bookworm.bookworm.model.Author;
 import pl.bookworm.bookworm.model.Book;
 
 import java.util.HashSet;
@@ -46,7 +48,7 @@ class BooksApiQuery {
         return volumesList.execute();
     }
 
-    Set<Book> getBooks(String query, boolean isAuthor) {
+    Set<Pair<Book, Author>> getBooks(String query, boolean isAuthor) {
         String prefix;
 
         if (isAuthor) prefix = "inauthor:";
@@ -63,8 +65,8 @@ class BooksApiQuery {
         return transformVolumeToBook(volumes);
     }
 
-    private Set<Book> transformVolumeToBook(Volumes volumes) {
-        Set<Book> booksForTakeaway = new HashSet<>();
+    private Set<Pair<Book, Author>> transformVolumeToBook(Volumes volumes) {
+        Set<Pair<Book, Author>> booksWithAuthorsForTakeaway = new HashSet<>();
         for (Volume item: volumes.getItems()) {
         	String thumbnailUrl = NO_COVER_THUMBNAIL_URL;
         	String categories = NO_CATEGORY;
@@ -80,25 +82,27 @@ class BooksApiQuery {
         		categories = String.join(", ", item.getVolumeInfo().getCategories().subList(0, maxCategories));
         	}
 
-        	try {
-
+        	try {        		
         	    log.info(item.getVolumeInfo().getAuthors().get(0));
 
-                booksForTakeaway.add(Book.builder()
-                        .googleApiId(item.getId())
-                        .title(item.getVolumeInfo().getTitle())
-                        .description((item.getVolumeInfo().getDescription() == null) ? NO_DESCRIPTION : item.getVolumeInfo().getDescription())
-                        .publicationYear(2005)
-                        .thumbnailUrl(thumbnailUrl)
-                        .categories(categories)
-                        .authorName(item.getVolumeInfo().getAuthors().get(0))
-                        .build());
+                booksWithAuthorsForTakeaway.add(Pair.of(
+                		Book.builder()
+	                        .googleApiId(item.getId())
+	                        .title(item.getVolumeInfo().getTitle())
+	                        .description((item.getVolumeInfo().getDescription() == null) ? NO_DESCRIPTION : item.getVolumeInfo().getDescription())
+	                        .publicationYear(2005)
+	                        .thumbnailUrl(thumbnailUrl)
+	                        .categories(categories)
+	                        .build(),
+            			Author.builder()
+                        	.name(item.getVolumeInfo().getAuthors().get(0))
+		                    .build()));
             } catch (NullPointerException e) {
                 log.warn("NPE in item");
                 log.info(item.toString());
             }
         }
 
-        return  booksForTakeaway;
+        return  booksWithAuthorsForTakeaway;
     }
 }
