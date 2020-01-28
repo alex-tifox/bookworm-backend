@@ -18,8 +18,7 @@ import java.util.Date;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
-import pl.bookworm.bookworm.service.middleware.AuthorMiddlewareService;
-import pl.bookworm.bookworm.service.middleware.BookMiddlewareService;
+import pl.bookworm.bookworm.service.middleware.MiddleWareService;
 
 //TODO: Check if the book is in our database or not - implement the mechanic from #BW-12
 @Slf4j
@@ -33,16 +32,15 @@ public class BookService {
 	BookReviewRepository bookReviewRepository;
 	BookRateRepository bookRateRepository;
 
-	BookMiddlewareService bookMiddlewareService;
-	AuthorMiddlewareService authorMiddlewareService;
+	MiddleWareService middleWareService;
 	UserService userService;
 
     public Set<Book> getAuthorBooks(String query) {
-        return authorMiddlewareService.getAuthorBooks(query);
+        return middleWareService.getAuthorBooks(query);
     }
 
     public Set<Book> getBooksByBookName(String query) {
-        return bookMiddlewareService.getBooksByName(query);
+        return middleWareService.getBooksByName(query);
     }
 
     public String addBookReview(String reviewText, Long bookId) {
