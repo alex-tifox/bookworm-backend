@@ -56,6 +56,17 @@ public class AuthorService {
 	}
 		
 	public String getAuthorBooksLastReview(String authorName) {
-		return null;
+		Author author = authorRepository.findAuthorByName(authorName);
+		
+		if(author != null)
+		{
+			String lastReviewText = bookRepository.getLastReviewText(author.getId());
+			if(lastReviewText == null)
+				lastReviewText = "";
+			
+			return lastReviewText;
+		}
+
+		return "";
 	}
 }
