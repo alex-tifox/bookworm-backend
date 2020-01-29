@@ -1,15 +1,17 @@
 package pl.bookworm.bookworm.service;
 
-import java.util.List;
-import java.util.Vector;
-
+import java.util.HashSet;
+import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import pl.bookworm.bookworm.model.Author;
+import pl.bookworm.bookworm.model.Book;
 import pl.bookworm.bookworm.model.SearchResult;
+import pl.bookworm.bookworm.model.User;
 import pl.bookworm.bookworm.repository.UserRepository;
 
 @Slf4j
@@ -18,7 +20,9 @@ import pl.bookworm.bookworm.repository.UserRepository;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class SearchService {
 	UserRepository userRepository;
-	
+	BookService bookService;
+	AuthorService authorService;
+
 	public SearchResult processSearch(String bookName, String authorName, String userName) {
 		log.info("Starting proccessing search");
 		
@@ -46,32 +50,32 @@ public class SearchService {
 	}
 	
 	SearchResult searchBooks(String bookName){
-		List<Object> booksFound =	new Vector<Object>();
+		Set<Book> booksFound = bookService.getBooksByBookName(bookName);
 		log.info("Found {} books with by query for {}", booksFound.size(), bookName);
 				
 		return SearchResult.builder()
 				.category("bookName")
-				.results(booksFound)
+				.foundBooks(booksFound)
 				.build();
 	}
 	
 	SearchResult searchAuthors(String authorName){
-		List<Object> authorsFound =	new Vector<Object>();
+		Set<Author> authorsFound = authorService.findAuthorsByName(authorName);
 		log.info("Found {} authors with by query for {}", authorsFound.size(), authorName);
 				
 		return SearchResult.builder()
 				.category("authorName")
-				.results(authorsFound)
+                .foundAuthors(authorsFound)
 				.build();	
 		}
 	
 	SearchResult searchUsers(String userName){
-		List<Object> usersFound =	new Vector<Object>(userRepository.findByUsernameContainingIgnoreCase(userName));
+		Set<User> usersFound =	new HashSet<>(userRepository.findByUsernameContainingIgnoreCase(userName));
 		log.info("Found {} users with by query for {}", usersFound.size(), userName);
 				
 		return SearchResult.builder()
 				.category("userName")
-				.results(usersFound)
+				.foundUsers(usersFound)
 				.build();
 	}
 }

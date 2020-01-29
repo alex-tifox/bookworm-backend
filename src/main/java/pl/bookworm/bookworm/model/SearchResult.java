@@ -1,6 +1,8 @@
 package pl.bookworm.bookworm.model;
 
 import java.util.List;
+import java.util.Set;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,5 +17,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SearchResult {
 	String category;
-	List<Object> results;
+	Set<Book> foundBooks;
+	Set<Author> foundAuthors;
+	Set<User> foundUsers;
+	Set<Object> results;
 }

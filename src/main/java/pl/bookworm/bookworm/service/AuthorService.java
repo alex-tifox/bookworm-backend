@@ -1,10 +1,5 @@
 package pl.bookworm.bookworm.service;
 
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,77 +11,51 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import pl.bookworm.bookworm.model.Author;
 import pl.bookworm.bookworm.model.Book;
-import pl.bookworm.bookworm.model.BookReview;
-import pl.bookworm.bookworm.model.User;
+import pl.bookworm.bookworm.repository.AuthorRepository;
+import pl.bookworm.bookworm.repository.BookRepository;
+import pl.bookworm.bookworm.service.middleware.MiddleWareService;
 
 @Slf4j
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Service
-public class AuthorService {	
+public class AuthorService {
+
+	AuthorRepository authorRepository;
+	BookRepository bookRepository;
+	
+	MiddleWareService middleWareService;
+	
+	public Set<Author> findAuthorsByName(String name) {
+		return middleWareService.getAuthors(name);
+	}
+	
 	public Set<Book> getAuthorBooks(String authorName){
-		return temporaryMockingAuthorData().getBooks();
+		return middleWareService.getAuthorBooks(authorName);
 	}
 	
 	public Set<Book> getAuthorTopBooks(String authorName){
-		ArrayList<Book> books = new ArrayList<Book>(temporaryMockingAuthorData().getBooks());
-		Collections.sort(books, Comparator.comparing(Book::getBookAverageRate).reversed());
-		return new HashSet<Book>(books.subList(0, 6));
+		Author foundAuthor = getAuthor(authorName);
+		
+		if (foundAuthor != null) {
+			return bookRepository.findFirst6ByAuthorOrderByBookAverageRateDesc(foundAuthor);
+		}
+		
+		return new HashSet<>();
 	}
 	
 	public Author getAuthor(String authorName) {
-		return temporaryMockingAuthorData();
-	}
-	
-	public String getAuthorBooksLastReview(String authorName) {
-		return temporaryMockingAuthorData().
-				getBooks().iterator().next()
-				.getBookReviews().iterator().next().getReviewText();
-	}
-	
-	static Author temporaryMockingAuthorData() {		
-		return Author.builder()
-				.name("Adam Mickiewicz")
-				.birthplace("Nowogródek")
-				.description("Writer")
-				.books(temporaryMockingAuthorBooks())
-				.build();
-	} 
-	
-	static Set<Book> temporaryMockingAuthorBooks(){
-		Set<Book> books = new HashSet<>();
-
-		for (int i = 0; i < 10; i++) {
-			books.add(
-				Book.builder()
-					.title("Dziady " + (i+2))
-					.publicationYear(1822+i)
-					.description("This book is veeery interesting")
-					.bookAverageRate((double)i)
-					.bookReviews(temporaryMockingAuthorBookReviews(i))
-					.build()
-					);
+		Author author = authorRepository.findAuthorByName(authorName);
+		
+		if (author == null) {
+			middleWareService.getAuthors(authorName);
+			author = authorRepository.findAuthorByName(authorName);
 		}
 		
-		return books;
+		return author;
 	}
-	
-	static Set<BookReview> temporaryMockingAuthorBookReviews(int daysSinceReview){
-        Set<BookReview> bookReviews = new HashSet<>();
-        
-        User user = User.builder()
-                .username("review_username")
-                .build();
-        
-        bookReviews.add(
-                BookReview.builder()
-                        .reviewText("Awesome book!")
-                        .reviewAuthor(user)
-                        .timeOfCreation(Date.from(new Date().toInstant().plus(-daysSinceReview, ChronoUnit.DAYS)))
-                        .build()
-        );
-        
-        return bookReviews;
-
+		
+	public String getAuthorBooksLastReview(String authorName) {
+		return null;
 	}
 }

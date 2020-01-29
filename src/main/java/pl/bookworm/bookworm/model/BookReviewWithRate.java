@@ -1,6 +1,9 @@
 package pl.bookworm.bookworm.model;
 
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +16,8 @@ import lombok.experimental.FieldDefaults;
 public class BookReviewWithRate {
 
     Long Id;
+    
+    @JsonIgnoreProperties({"favouriteBook", "usersRatedBooks"})
     User reviewAuthor;
     String reviewText;
     double rate;
