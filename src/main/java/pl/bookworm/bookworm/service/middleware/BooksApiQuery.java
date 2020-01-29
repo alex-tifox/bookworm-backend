@@ -89,8 +89,9 @@ class BooksApiQuery {
                 		Book.builder()
 	                        .googleApiId(item.getId())
 	                        .title(item.getVolumeInfo().getTitle())
+	                        .isbn((item.getVolumeInfo().getIndustryIdentifiers().size() >= 1) ? item.getVolumeInfo().getIndustryIdentifiers().get(0).getIdentifier() : "N/A")
 	                        .description((item.getVolumeInfo().getDescription() == null) ? NO_DESCRIPTION : item.getVolumeInfo().getDescription())
-	                        .publicationYear(2005)
+	                        .publishedDate((item.getVolumeInfo().getPublishedDate() == null) ? "N/A" : item.getVolumeInfo().getPublishedDate())
 	                        .thumbnailUrl(thumbnailUrl)
 	                        .categories(categories)
 	                        .build(),

@@ -18,7 +18,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
-    Integer publicationYear;
+    String publishedDate;
     @Column(columnDefinition = "TEXT")
     String title;
     String isbn;
@@ -40,7 +40,7 @@ public class Book {
     public String toString() {
         return "Book{" +
 
-                "publicationYear=" + publicationYear +
+                "publishedDate=" + publishedDate +
                 ", title='" + title + '\'' +
                 ", isbn='" + isbn + '\'' +
                 ", googleApiId='" + googleApiId + '\'' +
