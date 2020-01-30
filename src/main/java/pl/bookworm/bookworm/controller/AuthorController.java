@@ -40,7 +40,7 @@ public class AuthorController {
         return authorService.getAuthor(authorName);
     }
 
-    @GetMapping("getLastBookReview/{author_name}")
+    @GetMapping("/getLastBookReview/{author_name}")
     public String getLastBookReview(@PathVariable("author_name") String authorName) {
         log.info("Getting author's books' last review" + authorName);
         return authorService.getAuthorBooksLastReview(authorName);

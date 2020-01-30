@@ -22,7 +22,9 @@ public interface BookRepository extends JpaRepository<Book, Long> {
                     @Param("ThumbnailUrl") String thumbnailUrl,
                     @Param("Categories") String categories,
                     @Param("GoogleAPI_ID") String googleApiId);
-
+    
+    @Procedure(procedureName = "get_last_review_text")
+    String getLastReviewText(@Param("AuthorID") Long authorID);
 
     Set<Book> findFirst6ByAuthorOrderByBookAverageRateDesc(Author author);
     
